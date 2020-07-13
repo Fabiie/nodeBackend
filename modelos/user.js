@@ -20,6 +20,18 @@ const login = (request, response) => {
   }).catch(e => response.send(e.stack));
 }
 
+const generateToken = (rows) => {
+  const tokenData = {
+    id: rows[0].id,
+    nombre: rows[0].nombre,
+    correo: rows[0].correo
+  }
+  const token = jwt.sign({ tokenData }, 'pRu38aN0d3', {
+    expiresIn: 600 * 60 * 24
+  });
+  return (token);
+}
+
 const get = (request, response) => {
   db.pool.query('SELECT * FROM usuario').then(res => {
     response.send(res.rows);
